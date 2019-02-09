@@ -1,0 +1,38 @@
+#pragma once
+#include <Windows.h>
+
+typedef struct FuncInfo
+{
+	void* RvaAddr;
+	void* VaAddr;
+	void* FaAddr;
+	DWORD size;
+}FuncInfo;
+
+
+typedef struct Map
+{
+	HANDLE hFile;     // ÎÄ¼þ¾ä±ú
+	HANDLE hMapping;  // Ó³ÉäÎÄ¼þ¾ä±ú
+	LPVOID ImageBase; // Ó³Éä»ùÖ·
+}MappingFile, pMappingFile;
+
+int  FindCodeTag(void *pStartAddr, unsigned long *pTagLoc,
+	unsigned long lTagValue, int nSerachLength);
+
+int VAtoFileOffset(void *pModuleBase, void *pVA);
+
+bool GetSMCCode(void *pModuleBase, const char *lpszSection, void** ppPos, LPDWORD lpSize);
+
+bool getFuncInfo(char* sName, void* startFunc, void* endFunc, FuncInfo* fi);
+
+bool CreateCopyEXE(char* fname, MappingFile* fctx);
+
+void CreateCopyEXEEnd();
+
+void preEncryptBlock(MappingFile* fctx);
+
+void preEncryptBlockEnd();
+
+void clearFunc(MappingFile* fctx);
+
